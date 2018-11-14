@@ -56,7 +56,7 @@ public class RebootConfirmFragment extends GuidedStepSupportFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setSelectedActionPosition(1);
+        setSelectedActionPosition(0);
     }
 
     @Override
@@ -83,6 +83,10 @@ public class RebootConfirmFragment extends GuidedStepSupportFragment {
     public void onCreateActions(@NonNull List<GuidedAction> actions,
             Bundle savedInstanceState) {
         final Context context = getActivity();
+        actions.add(new GuidedAction.Builder(context)
+                .icon(R.drawable.ic_cancel)
+                .clickAction(GuidedAction.ACTION_ID_CANCEL)
+                .build());
         if (getArguments().getBoolean(ARG_SAFE_MODE, false)) {
             actions.add(new GuidedAction.Builder(context)
                     .id(GuidedAction.ACTION_ID_OK)
@@ -94,9 +98,6 @@ public class RebootConfirmFragment extends GuidedStepSupportFragment {
                     .title(R.string.restart_button_label)
                     .build());
         }
-        actions.add(new GuidedAction.Builder(context)
-                .clickAction(GuidedAction.ACTION_ID_CANCEL)
-                .build());
     }
 
     @Override
