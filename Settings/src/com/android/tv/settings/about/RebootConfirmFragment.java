@@ -36,6 +36,8 @@ import androidx.leanback.widget.GuidedAction;
 import com.android.tv.settings.R;
 import com.android.tv.settings.overlay.FlavorUtils;
 
+import com.evervolv.internal.util.PowerMenuUtils;
+
 import java.util.List;
 
 @Keep
@@ -69,6 +71,13 @@ public class RebootConfirmFragment extends GuidedStepSupportFragment {
                     null,
                     getActivity().getDrawable(R.drawable.ic_warning_132dp)
             );
+        } else if (PowerMenuUtils.isAdvancedRestartPossible(getActivity())) {
+            return new GuidanceStylist.Guidance(
+                    getString(R.string.system_reboot_confirm_cm),
+                    null,
+                    null,
+                    getActivity().getDrawable(R.drawable.ic_warning_132dp)
+            );
         } else {
             return new GuidanceStylist.Guidance(
                     getString(R.string.system_reboot_confirm),
@@ -89,11 +98,29 @@ public class RebootConfirmFragment extends GuidedStepSupportFragment {
                 .build());
         if (getArguments().getBoolean(ARG_SAFE_MODE, false)) {
             actions.add(new GuidedAction.Builder(context)
+                    .icon(R.drawable.ic_restart_alt)
                     .id(GuidedAction.ACTION_ID_OK)
                     .title(R.string.reboot_safemode_action)
                     .build());
+        } else if (PowerMenuUtils.isAdvancedRestartPossible(context)) {
+            actions.add(new GuidedAction.Builder(context)
+                    .icon(R.drawable.ic_restart_alt)
+                    .id(GuidedAction.ACTION_ID_OK)
+                    .title(R.string.global_action_restart_system)
+                    .build());
+            actions.add(new GuidedAction.Builder(context)
+                    .icon(R.drawable.ic_lock_restart_recovery)
+                    .id(GuidedAction.ACTION_ID_YES)
+                    .title(R.string.global_action_restart_recovery)
+                    .build());
+            actions.add(new GuidedAction.Builder(context)
+                    .icon(R.drawable.ic_lock_restart_bootloader)
+                    .id(GuidedAction.ACTION_ID_NO)
+                    .title(R.string.global_action_restart_bootloader)
+                    .build());
         } else {
             actions.add(new GuidedAction.Builder(context)
+                    .icon(R.drawable.ic_restart_alt)
                     .id(GuidedAction.ACTION_ID_OK)
                     .title(R.string.restart_button_label)
                     .build());
@@ -121,8 +148,11 @@ public class RebootConfirmFragment extends GuidedStepSupportFragment {
 
     @Override
     public void onGuidedActionClicked(GuidedAction action) {
-        if (action.getId() == GuidedAction.ACTION_ID_OK) {
+        long actionId = action.getId();
+        if (actionId != GuidedAction.ACTION_ID_CANCEL) {
             final boolean toSafeMode = getArguments().getBoolean(ARG_SAFE_MODE, false);
+            final boolean isAdvancedRestartPossible =
+                    PowerMenuUtils.isAdvancedRestartPossible(getActivity());
             final PowerManager pm =
                     (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
 
@@ -131,6 +161,14 @@ public class RebootConfirmFragment extends GuidedStepSupportFragment {
                 protected Void doInBackground(Void... params) {
                     if (toSafeMode) {
                         pm.rebootSafeMode();
+                    } else if (isAdvancedRestartPossible) {
+                        if (actionId == GuidedAction.ACTION_ID_YES) {
+                            pm.rebootCustom("recovery");
+                        } else if (actionId == GuidedAction.ACTION_ID_NO) {
+                            pm.rebootCustom("bootloader");
+                        } else {
+                            pm.reboot(null);
+                        }
                     } else {
                         pm.reboot(null);
                     }
