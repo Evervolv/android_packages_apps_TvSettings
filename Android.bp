@@ -44,6 +44,7 @@ android_library {
         "TwoPanelSettingsLib",
         "zxing-core-1.7",
         "TvSettingsAPI",
+        "com.evervolv.platform.internal",
     ],
 }
 
@@ -140,7 +141,7 @@ android_app {
         "Settings/res-twopanel",
     ],
     overrides: ["TvSettings"],
-    defaults: ["SettingsLibDefaults"],
+    defaults: ["EVSettingsLibDefaults"],
     platform_apis: true,
     certificate: "platform",
     system_ext_specific: true,
