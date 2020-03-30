@@ -19,15 +19,21 @@ package com.android.tv.settings.system;
 import android.os.Bundle;
 
 import androidx.annotation.Keep;
+import androidx.preference.Preference;
+import androidx.preference.TwoStatePreference;
 
 import com.android.tv.settings.R;
 import com.android.tv.settings.SettingsPreferenceFragment;
+
+import evervolv.provider.EVSettings;
 
 /**
  * The button settings screen in TV settings.
  */
 @Keep
-public class ButtonsFragment extends SettingsPreferenceFragment {
+public class ButtonsFragment extends SettingsPreferenceFragment
+        implements Preference.OnPreferenceChangeListener {
+    private static final String KEY_ADVANCED_REBOOT = "advanced_reboot";
 
     public static ButtonsFragment newInstance() {
         return new ButtonsFragment();
@@ -36,5 +42,17 @@ public class ButtonsFragment extends SettingsPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.buttons, null);
+
+        TwoStatePreference advancedReboot = findPreference(KEY_ADVANCED_REBOOT);
+        advancedReboot.setOnPreferenceChangeListener(this);
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (KEY_ADVANCED_REBOOT.equals(preference.getKey())) {
+            EVSettings.Secure.putInt(getContext().getContentResolver(),
+                    EVSettings.Secure.ADVANCED_REBOOT, (Boolean) newValue ? 1 : 0);
+        }
+        return true;
     }
 }

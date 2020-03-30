@@ -27,6 +27,20 @@
     <string name="usb_debugging_enable_title">USB debugging enabled</string>
     <string name="usb_debugging_enable_warning">USB port 1 is now configured for SHIELD to connect to a PC as a media device.\n\nThis port will no longer detect USB storage media or USB accessories and cannot be used for charging devices.</string>
 
+    <!-- Advanced restart menu -->
+    <!-- Title for reboot confirmation in Restart Options dialog [CHAR LIMIT=50] -->
+    <string name="system_reboot_confirm_cm">Restart to:</string>
+    <!-- Button to restart the device, within the Restart Options dialog -->
+    <string name="global_action_restart_system">System</string>
+    <!-- Button to restart the device into recovery mode, within the Restart Options dialog -->
+    <string name="global_action_restart_recovery">Recovery</string>
+    <!-- Button to restart the device into bootloader mode, within the Restart Options dialog -->
+    <string name="global_action_restart_bootloader">Bootloader</string>
+
+    <!-- Advanced restart options -->
+    <string name="advanced_restart_title">Advanced restart</string>
+    <string name="advanced_restart_summary">Show options for restarting into recovery, bootloader or performing a soft restart</string>
+
     <!-- Buttons screen -->
     <string name="system_buttons">Buttons</string>
 
