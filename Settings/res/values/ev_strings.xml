@@ -19,4 +19,7 @@
     <string name="enable_adb_root">Rooted debugging</string>
     <string name="enable_adb_root_summary">Allow running Android debugging as root</string>
 
+    <!-- Buttons screen -->
+    <string name="system_buttons">Buttons</string>
+
 </resources>
