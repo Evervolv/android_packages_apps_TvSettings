@@ -27,6 +27,9 @@
     <string name="usb_debugging_enable_title">USB debugging enabled</string>
     <string name="usb_debugging_enable_warning">USB port 1 is now configured for SHIELD to connect to a PC as a media device.\n\nThis port will no longer detect USB storage media or USB accessories and cannot be used for charging devices.</string>
 
+    <!-- Buttons screen -->
+    <string name="system_buttons">Buttons</string>
+
     <!-- Button to shutdown the device [CHAR LIMIT=40] -->
     <string name="shutdown_button_label">Shutdown</string>
 
