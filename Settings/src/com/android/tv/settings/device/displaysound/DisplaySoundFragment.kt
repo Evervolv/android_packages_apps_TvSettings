@@ -86,6 +86,10 @@ class DisplaySoundFragment : SettingsPreferenceFragment(), DisplayManager.Displa
         mCurrentDeviceName = DeviceUtils.getDeviceName(context)
         updateVolumeChangePreference()
 
+        if (!resources.getBoolean(R.bool.enable_framerate_config)) {
+            removePreference(findPreference(KEY_FRAMERATE));
+        }
+
         val display = mDisplayManager.getDisplay(Display.DEFAULT_DISPLAY)
         if (display.systemPreferredDisplayMode != null) {
             mDisplayManager.registerDisplayListener(this, null)
@@ -222,6 +226,7 @@ class DisplaySoundFragment : SettingsPreferenceFragment(), DisplayManager.Displa
         private const val KEY_DEFAULT_AUDIO_OUTPUT_SETTINGS_SLICE = "default_audio_output_settings"
         private const val KEY_RESOLUTION_TITLE = "resolution_selection"
         private const val KEY_DYNAMIC_RANGE = "match_content_dynamic_range"
+        private const val KEY_FRAMERATE = "match_content_frame_rate";
 
         private const val VOLUME_CHANGE = "volume_change"
 
